@@ -20,9 +20,9 @@
         pkgs = import nixpkgs { inherit system; };
       in
       {
-        # Provisioning installer package and NixOS integration.
+        # Provisioning installer package and integrations.
         packages.eduroam-installer = pkgs.callPackage ./default.nix { };
-        nixosModules.eduroam-installer = import ./eduroam-installer { };
+        nixosModules.nix-eduroam = import ./eduroam-installer { };
 
         # NixShell with same dependencies.
         devShells.default = pkgs.mkShell {
