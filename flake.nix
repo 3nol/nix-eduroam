@@ -3,7 +3,14 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -11,6 +18,7 @@
       self,
       nixpkgs,
       flake-utils,
+      home-manager,
       ...
     }:
 
@@ -22,7 +30,8 @@
       {
         # Provisioning installer package and integrations.
         packages.eduroam-installer = pkgs.callPackage ./eduroam-installer { };
-        nixosModules.nix-eduroam = ./eduroam-service;
+        nixosModules.nix-eduroam = ./eduroam-service/for-os.nix;
+        homeManagerModules.nix-eduroam = ./eduroam-service/for-hm.nix;
 
         # NixShell with same dependencies.
         devShells.default = pkgs.mkShell {

@@ -1,5 +1,6 @@
 {
   pkgs ? import <nixpkgs> { },
+  ...
 }:
 
 pkgs.writeShellApplication {
