@@ -14,8 +14,8 @@ if [[ -n "${EDUROAM_FORCE_WPA:-}" && "${EDUROAM_FORCE_WPA:-}" != 0 ]]; then
 fi
 
 # Download the per-institution installer and pass authentication.
-curl --silent --data "device=linux" --get "$( \
-  curl --silent --compressed --get 'https://discovery.eduroam.app/v1/discovery.json' | \
+curl --data "device=linux" --get "$( \
+  curl --compressed --get 'https://discovery.eduroam.app/v1/discovery.json' | \
   jq -r '.instances[] | select(.name == "'"$INSTITUTION"'") | .profiles[0].eapconfig_endpoint' \
 )" | \
-python3 - --silent --username "$USERNAME" --password "$(eval "$PASSWORD_COMMAND")" $FORCE_WPA
+python3 - --username "$USERNAME" --password "$(eval "$PASSWORD_COMMAND")" $FORCE_WPA
