@@ -53,7 +53,7 @@
             "EDUROAM_PASSWORD_COMMAND=${cfg.passwordCommand}"
             "EDUROAM_FORCE_WPA=${cfg.forceWPA}"
           ];
-          ExecStart = "${pkgs.eduroam-installer}/bin/eduroam-installer.sh";
+          ExecStart = "${pkgs.eduroam-installer}/bin/eduroam-installer";
         };
         wantedBy = [ "multi-user.target" ];
       };
@@ -71,7 +71,7 @@
             "EDUROAM_PASSWORD_COMMAND=${cfg.passwordCommand}"
             "EDUROAM_FORCE_WPA=${cfg.forceWPA}"
           ];
-          ExecStart = "${pkgs.eduroam-installer}/bin/eduroam-installer.sh";
+          ExecStart = "${pkgs.eduroam-installer}/bin/eduroam-installer";
         };
         Install.WantedBy = [ "graphical-session.target" ];
       };
