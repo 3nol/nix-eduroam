@@ -22,7 +22,7 @@
       {
         # Provisioning installer package and integrations.
         packages.eduroam-installer = pkgs.callPackage ./eduroam-installer { };
-        nixosModules.nix-eduroam = import ./eduroam-service { };
+        nixosModules.nix-eduroam = ./eduroam-service;
 
         # NixShell with same dependencies.
         devShells.default = pkgs.mkShell {

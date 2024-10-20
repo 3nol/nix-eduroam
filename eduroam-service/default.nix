@@ -34,46 +34,54 @@
     in
     {
       services.eduroam = mkEduroamOptions "NixOS";
-      services.user.eduroam = mkEduroamOptions "HomeManager";
+      home.eduroam = mkEduroamOptions "HomeManager";
     };
 
   config =
-    (lib.mkIf services.eduroam.enable {
+    (lib.mkIf config.services.eduroam.enable {
 
       # NixOS config for system-level installer.
-      systemd.services.eduroam-installer = {
-        description = "Eduroam Installer";
-        unitConfig = {
-          Type = "oneshot";
+      systemd.services.eduroam-installer =
+        let
+          cfg = config.services.eduroam;
+        in
+        {
+          description = "Eduroam Installer";
+          unitConfig = {
+            Type = "oneshot";
+          };
+          serviceConfig = {
+            Environment = [
+              "EDUROAM_INSTITUTION=${cfg.institution}"
+              "EDUROAM_USERNAME=${cfg.username}"
+              "EDUROAM_PASSWORD_COMMAND=${cfg.passwordCommand}"
+              "EDUROAM_FORCE_WPA=${if cfg.forceWPA then 1 else 0}"
+            ];
+            ExecStart = "${pkgs.eduroam-installer}/bin/eduroam-installer";
+          };
+          wantedBy = [ "multi-user.target" ];
         };
-        serviceConfig = {
-          Environment = [
-            "EDUROAM_INSTITUTION=${cfg.institution}"
-            "EDUROAM_USERNAME=${cfg.username}"
-            "EDUROAM_PASSWORD_COMMAND=${cfg.passwordCommand}"
-            "EDUROAM_FORCE_WPA=${cfg.forceWPA}"
-          ];
-          ExecStart = "${pkgs.eduroam-installer}/bin/eduroam-installer";
-        };
-        wantedBy = [ "multi-user.target" ];
-      };
     })
-    // (lib.mkIf services.user.eduroam.enable {
+    // (lib.mkIf config.home.eduroam.enable {
 
       # HomeManager config for user-level installer.
-      systemd.user.services.eduroam-installer = {
-        Unit.Description = "Eduroam Installer";
-        Service = {
-          Type = "oneshot";
-          Environment = [
-            "EDUROAM_INSTITUTION=${cfg.institution}"
-            "EDUROAM_USERNAME=${cfg.username}"
-            "EDUROAM_PASSWORD_COMMAND=${cfg.passwordCommand}"
-            "EDUROAM_FORCE_WPA=${cfg.forceWPA}"
-          ];
-          ExecStart = "${pkgs.eduroam-installer}/bin/eduroam-installer";
+      systemd.user.services.eduroam-installer =
+        let
+          cfg = config.home.eduroam;
+        in
+        {
+          Unit.Description = "Eduroam Installer";
+          Service = {
+            Type = "oneshot";
+            Environment = [
+              "EDUROAM_INSTITUTION=${cfg.institution}"
+              "EDUROAM_USERNAME=${cfg.username}"
+              "EDUROAM_PASSWORD_COMMAND=${cfg.passwordCommand}"
+              "EDUROAM_FORCE_WPA=${if cfg.forceWPA then 1 else 0}"
+            ];
+            ExecStart = "${pkgs.eduroam-installer}/bin/eduroam-installer";
+          };
+          Install.WantedBy = [ "graphical-session.target" ];
         };
-        Install.WantedBy = [ "graphical-session.target" ];
-      };
     });
 }
