@@ -1,6 +1,6 @@
 # nix-eduroam
 
-Eduroam as systemd service in NixOS.
+Eduroam as systemd service for NixOS and HomeManager.
 
 ## Disclaimer
 
