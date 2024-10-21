@@ -1,3 +1,4 @@
+{ eduroam-installer, ... }:
 {
   config,
   lib,
@@ -29,7 +30,7 @@
             "EDUROAM_PASSWORD_COMMAND=${cfg.passwordCommand}"
             "EDUROAM_FORCE_WPA=${if cfg.forceWPA then 1 else 0}"
           ];
-          ExecStart = "${pkgs.eduroam-installer}/bin/eduroam-installer";
+          ExecStart = "${eduroam-installer}/bin/eduroam-installer";
         };
         wantedBy = [ "multi-user.target" ];
       };

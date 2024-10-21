@@ -1,5 +1,5 @@
 {
-  description = "Eduroam as systemd service for NixOS and HomeManager.";
+  description = "Eduroam installation as service for NixOS and HomeManager.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -23,12 +23,13 @@
       system:
       let
         pkgs = import nixpkgs { inherit system; };
+        eduroam-installer = pkgs.callPackage ./eduroam-installer { };
       in
       {
-        # Provisioning installer package and integrations.
-        packages.eduroam-installer = pkgs.callPackage ./eduroam-installer { };
-        nixosModules.nix-eduroam = ./eduroam-service/for-os.nix;
-        homeManagerModules.nix-eduroam = ./eduroam-service/for-hm.nix;
+        # Provisioning integrations for installer service.
+        packages.eduroam-installer = eduroam-installer;
+        nixosModules.nix-eduroam = import ./eduroam-service/for-os.nix { inherit eduroam-installer; };
+        homeManagerModules.nix-eduroam = import ./eduroam-service/for-hm.nix { inherit eduroam-installer; };
 
         # NixShell with same dependencies.
         devShells.default = pkgs.mkShell {
