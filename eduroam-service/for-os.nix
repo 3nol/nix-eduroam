@@ -5,6 +5,9 @@
   pkgs,
   ...
 }:
+let
+  boolToIntString = value: builtins.toString (if value then 1 else 0);
+in
 {
   options = {
     services.eduroam = import ./options.nix {
@@ -28,7 +31,7 @@
             "EDUROAM_INSTITUTION=${cfg.institution}"
             "EDUROAM_USERNAME=${cfg.username}"
             "EDUROAM_PASSWORD_COMMAND=${cfg.passwordCommand}"
-            "EDUROAM_FORCE_WPA=${if cfg.forceWPA then 1 else 0}"
+            "EDUROAM_FORCE_WPA=${boolToIntString cfg.forceWPA}"
           ];
           ExecStart = "${eduroam-installer}/bin/eduroam-installer";
         };
