@@ -37,7 +37,7 @@
             coreutils
             curl
             jq
-            (python3.withPackages (p: with p; [ dbus ]))
+            (python3.withPackages (p: with p; [ dbus-python ]))
           ];
         };
       }
