@@ -28,10 +28,10 @@ in
         unitConfig.Type = "oneshot";
         serviceConfig = {
           Environment = [
-            "EDUROAM_INSTITUTION=${cfg.institution}"
-            "EDUROAM_USERNAME=${cfg.username}"
-            "EDUROAM_PASSWORD_COMMAND=${cfg.passwordCommand}"
-            "EDUROAM_FORCE_WPA=${boolToIntString cfg.forceWPA}"
+            "EDUROAM_INSTITUTION=${lib.escapeShellArg cfg.institution}"
+            "EDUROAM_USERNAME=${lib.escapeShellArg cfg.username}"
+            "EDUROAM_PASSWORD_COMMAND=${lib.escapeShellArg cfg.passwordCommand}"
+            "EDUROAM_FORCE_WPA=${lib.escapeShellArg (boolToIntString cfg.forceWPA)}"
           ];
           ExecStart = "${eduroam-installer}/bin/eduroam-installer";
         };
