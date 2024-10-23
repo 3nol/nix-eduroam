@@ -25,6 +25,7 @@ in
       in
       {
         description = "Eduroam Installer";
+
         unitConfig.Type = "oneshot";
         environment = {
           EDUROAM_INSTITUTION = "${lib.escapeShellArg cfg.institution}";
@@ -33,7 +34,11 @@ in
           EDUROAM_FORCE_WPA = "${lib.escapeShellArg (boolToIntString cfg.forceWPA)}";
         };
         serviceConfig.ExecStart = "${eduroam-installer}/bin/eduroam-installer";
+
         wantedBy = [ "multi-user.target" ];
+
+        # So that arbitrary password commands can be evaluated.
+        path = [ "/run/current-system/sw" ];
       };
   };
 }
