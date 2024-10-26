@@ -24,12 +24,14 @@
       let
         pkgs = import nixpkgs { inherit system; };
         eduroam-installer = pkgs.callPackage ./eduroam-installer { };
+        eduroam-service =
+          module: import (./eduroam-service + "/${module}.nix") { inherit eduroam-installer; };
       in
       {
         # Provisioning integrations for installer service.
         packages.eduroam-installer = eduroam-installer;
-        nixosModules.nix-eduroam = import ./eduroam-service/for-os.nix { inherit eduroam-installer; };
-        homeManagerModules.nix-eduroam = import ./eduroam-service/for-hm.nix { inherit eduroam-installer; };
+        nixosModules.nix-eduroam = eduroam-service "for-os";
+        homeManagerModules.nix-eduroam = eduroam-service "for-hm";
 
         # NixShell with same dependencies.
         devShells.default = pkgs.mkShell {
