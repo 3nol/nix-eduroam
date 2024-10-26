@@ -38,7 +38,7 @@ in
         wantedBy = [ "multi-user.target" ];
 
         # So that arbitrary password commands can be evaluated.
-        path = [ "/run/current-system/sw" ];
+        path = [ "/run/current-system/sw/bin" ];
       };
   };
 }

@@ -1,5 +1,5 @@
 {
-  description = "Eduroam installation as service for NixOS and HomeManager.";
+  description = "Eduroam installation service for NixOS and HomeManager.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
