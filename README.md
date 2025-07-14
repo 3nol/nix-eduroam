@@ -34,9 +34,9 @@ curl --compressed 'https://discovery.eduroam.app/v1/discovery.json' | jq --raw-o
 ### NixOS Module
 
 In case of the NixOS integration, this installer is run as root (i.e. as systemd OS service).
-Using `<your system>`, you can integrate it in your NixOS modules as follows.
+You can integrate it in your NixOS modules as follows.
 ```nix
-nix-eduroam.nixosModules."<your system>".nix-eduroam
+nix-eduroam.nixosModules.default
 ```
 
 Note that this might affect the password commands you want to evaluate, however,
@@ -48,9 +48,9 @@ The root (same options as above) is `services.eduroam`.
 ### HomeManager Module
 
 In case of the HomaManager integration, this installer is run per user (i.e. as systemd user service).
-Using `<your system>`, you can integrate it in your HomeManager imports as follows.
+You can integrate it in your HomeManager imports as follows.
 ```nix
-nix-eduroam.homeManagerModules."<your system>".nix-eduroam
+nix-eduroam.homeManagerModules.default
 ```
 
 Personally, I recommend using HomeManager, as the user-level service is sufficient.

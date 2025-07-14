@@ -19,7 +19,7 @@
       ...
     }:
 
-    flake-utils.lib.eachDefaultSystem (
+    flake-utils.lib.eachDefaultSystemPassThrough (
       system:
       let
         pkgs = import nixpkgs { inherit system; };
@@ -29,12 +29,11 @@
       in
       {
         # Provisioning integrations for installer service.
-        packages.eduroam-installer = eduroam-installer;
-        nixosModules.nix-eduroam = eduroam-service "for-os";
-        homeManagerModules.nix-eduroam = eduroam-service "for-hm";
+        nixosModules.default = eduroam-service "for-os";
+        homeManagerModules.default = eduroam-service "for-hm";
 
-        # NixShell with same dependencies.
-        devShells.default = pkgs.mkShell {
+        # Shell with same dependencies.
+        devShells."${system}".default = pkgs.mkShell {
           buildInputs = with pkgs; [
             coreutils
             curl
